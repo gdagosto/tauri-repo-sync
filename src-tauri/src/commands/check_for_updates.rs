@@ -3,9 +3,9 @@ use crate::structs::RepositoryData;
 
 #[tauri::command]
 pub async fn check_for_updates(data: RepositoryData) -> Result<String, String> {
-    let cwd = data.local_path;
-    let local_branch = data.local_branch;
-    let remote_branch = data.remote_name + "/" + &data.remote_branch;
+    let cwd = &data.local_path;
+    let local_branch = &data.local_branch;
+    let remote_branch = data.remote_branch();
 
     // Get local branch commit id
     let command = format!("git rev-parse {}", local_branch);

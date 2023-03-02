@@ -24,9 +24,7 @@
 	$: data = changeRepo(localPath, localBranch, remoteName, remoteBranch);
 
 	async function checkForUpdates() {
-		invoke('check_for_updates', {
-			data
-		})
+		invoke('check_for_updates', { data })
 			.then((res) => {
 				// Checa se deveria dar pull
 				if (res === 'shouldPull') {
@@ -37,10 +35,7 @@
 	}
 
 	async function tryToPull() {
-		invoke('try_to_pull', {
-			command: 'git fetch',
-			cwd: 'C:\\programacao\\ATSR\\svelte-components'
-		})
+		invoke('try_to_pull', { data })
 			.then((res) => console.log(res))
 			.catch((e) => console.error(e));
 	}
