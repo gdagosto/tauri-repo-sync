@@ -1,5 +1,5 @@
-use crate::utils::run_async_command;
 use crate::structs::RepositoryData;
+use crate::utils::run_async_command;
 
 #[tauri::command]
 pub async fn check_for_updates(data: RepositoryData) -> Result<String, String> {
