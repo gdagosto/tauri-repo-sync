@@ -12,28 +12,7 @@
 	},
 	"tauri": {
 		"allowlist": {
-			"all": false,
-			"shell": {
-				"all": true,
-				"scope": [
-					{
-						"name": "dir",
-						"cmd": "dir",
-						"args": false
-					},
-					{
-						"name": "echo",
-						"cmd": "echo",
-						"args": true
-					},
-					{
-						"name": "cmd",
-						"cmd": "cmd",
-						"args": true
-					}
-				],
-				"sidecar": false
-			}
+			"all": false
 		},
 		"bundle": {
 			"active": true,
@@ -73,6 +52,10 @@
 		},
 		"updater": {
 			"active": false
+		},
+		"systemTray": {
+			"iconPath": "icons/icon.png",
+			"iconAsTemplate": true
 		},
 		"windows": [
 			{
