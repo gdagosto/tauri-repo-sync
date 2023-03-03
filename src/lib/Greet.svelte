@@ -1,27 +1,13 @@
 <script lang="ts">
 	import { invoke } from '@tauri-apps/api/tauri';
-	import { PUBLIC_LOCAL_PATH, PUBLIC_BRANCH_NAME } from '$env/static/public';
+	import type { Repository } from '$lib/types';
 
-	let localPath = PUBLIC_LOCAL_PATH;
-	let localBranch = PUBLIC_BRANCH_NAME;
-	let remoteName = 'origin';
-	let remoteBranch = PUBLIC_BRANCH_NAME;
+	import { appWindow } from '@tauri-apps/api/window';
+	appWindow.listen('try_to_pull_command', ({ payload }) => {
+		console.log('try_to_pull_command', payload);
+	});
 
-	function changeRepo(
-		local_path: string,
-		local_branch: string,
-		remote_name: string,
-		remote_branch: string
-	) {
-		return {
-			local_path,
-			local_branch,
-			remote_name,
-			remote_branch
-		};
-	}
-
-	$: data = changeRepo(localPath, localBranch, remoteName, remoteBranch);
+	export let data: Repository;
 
 	async function checkForUpdates() {
 		invoke('check_for_updates', { data })
@@ -29,30 +15,21 @@
 				// Checa se deveria dar pull
 				if (res === 'shouldPull') {
 					console.log('shouldPull');
+				} else {
+					console.log(res);
 				}
 			})
 			.catch((e) => console.error(e));
 	}
 
 	async function tryToPull() {
-		invoke('try_to_pull', { data })
+		invoke('try_to_pull', { data, commands: ['yarn build'] })
 			.then((res) => console.log(res))
 			.catch((e) => console.error(e));
 	}
 </script>
 
 <div class="wrapper">
-	<form action="">
-		<label for="inpLocalPath">Local path</label>
-		<input type="text" id="inpLocalPath" bind:value={localPath} />
-		<label for="inpLocalBranch">Local branch</label>
-		<input type="text" id="inpLocalBranch" bind:value={localBranch} />
-		<label for="inpRemoteName">Remote name</label>
-		<input type="text" id="inpRemoteName" bind:value={remoteName} />
-		<label for="inpRemoteBranch">Remote branch</label>
-		<input type="text" id="inpRemoteBranch" bind:value={remoteBranch} />
-	</form>
-
 	<div class="buttons">
 		<button on:click={checkForUpdates}>Check for updates</button>
 		<button on:click={tryToPull}>Try to pull</button>
